@@ -28,7 +28,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     @objc func insertNewObject() {
-        let newUser = User(name: "abacaxi")
+        let newUser = User(username: "abacaxi")
         _ = UserPersistenceManager.sharedInstance.createUser(newUser)
         users = UserPersistenceManager.sharedInstance.users() ?? []
     }
@@ -45,7 +45,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel!.text = users[indexPath.row].name
+        cell.textLabel!.text = users[indexPath.row].id?.uuidString
         return cell
     }
 
@@ -56,7 +56,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            UserPersistenceManager.sharedInstance.deleteUser(index: indexPath.row)
+            UserPersistenceManager.sharedInstance.deleteUser(users[indexPath.row])
             users = UserPersistenceManager.sharedInstance.users() ?? []
         }
     }

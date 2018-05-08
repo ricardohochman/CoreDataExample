@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C86B42920A142B20068D25E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C86B42820A142B20068D25E /* User.swift */; };
 		8CAB02132099155100D4A5EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB02122099155100D4A5EF /* AppDelegate.swift */; };
 		8CAB02162099155100D4A5EF /* CoreDataTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB02142099155100D4A5EF /* CoreDataTest.xcdatamodeld */; };
 		8CAB02182099155100D4A5EF /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB02172099155100D4A5EF /* MasterViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C86B42820A142B20068D25E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8CAB020F2099155100D4A5EF /* CoreDataTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CAB02122099155100D4A5EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CAB02152099155100D4A5EF /* CoreDataTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataTest.xcdatamodel; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			children = (
 				8CAB023420991E4000D4A5EF /* CoreDataManager.swift */,
 				8CF5511F20993C9500134500 /* UserPersistenceManager.swift */,
+				8C86B42820A142B20068D25E /* User.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 			files = (
 				8CAB02162099155100D4A5EF /* CoreDataTest.xcdatamodeld in Sources */,
 				8CAB02132099155100D4A5EF /* AppDelegate.swift in Sources */,
+				8C86B42920A142B20068D25E /* User.swift in Sources */,
 				8CF5512020993C9500134500 /* UserPersistenceManager.swift in Sources */,
 				8CAB02182099155100D4A5EF /* MasterViewController.swift in Sources */,
 				8CAB023520991E4000D4A5EF /* CoreDataManager.swift in Sources */,

@@ -9,28 +9,32 @@
 import CoreData
 import UIKit
 
-protocol CoreDataManager {
+protocol CoreDataManager: class {
     associatedtype T: NSManagedObject
 }
 
 extension CoreDataManager {
-
-    func newEntity() -> T {
-        let context = AppDelegate().sharedInstance().persistentContainer.viewContext
-        return NSEntityDescription.insertNewObject(forEntityName: T.entityName(), into: context) as! T
+    
+    private var context: NSManagedObjectContext {
+        return AppDelegate().sharedInstance().persistentContainer.viewContext
     }
-
+    
+    // CRUD: Create, Read, Update, Delete
+    
+    func newEntity() -> T {
+        // swiftlint:disable force_cast
+        return NSEntityDescription.insertNewObject(forEntityName: T.description(), into: context) as! T
+        // swiftlint:enable force_cast
+    }
+    
     func fetchData(_ predicate: NSPredicate? = NSPredicate(format: "TRUEPREDICATE")) -> [T]? {
         
         let fetch = NSFetchRequest<T>(entityName: T.description())
         fetch.predicate = predicate
         
         do {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                let resultSet : [Any] = try appDelegate.persistentContainer.viewContext.fetch(fetch)
-                return resultSet as? [T] ?? []
-            }
-            
+            let resultSet: [T] = try context.fetch(fetch)
+            return resultSet
         } catch {
             print(#function, error)
         }
@@ -43,15 +47,18 @@ extension CoreDataManager {
     }
     
     func delete(_ object: T) {
-        let context = AppDelegate().sharedInstance().persistentContainer.viewContext
         context.delete(object)
+        self.saveContext()
+    }
+    
+    func delete(_ objects: [T]) {
+        objects.forEach { context.delete($0) }
         self.saveContext()
     }
     
     // MARK: - Core Data Saving support
     
     func saveContext() {
-        let context = AppDelegate().sharedInstance().persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -63,12 +70,4 @@ extension CoreDataManager {
             }
         }
     }
-    
 }
-
-extension NSManagedObject {
-    class func entityName() -> String {
-        return self.entity().name ?? ""
-    }
-}
-

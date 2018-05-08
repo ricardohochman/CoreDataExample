@@ -8,20 +8,6 @@
 
 import CoreData
 
-struct User {
-    var name: String?
-    
-    static func fromPersistence(_ userPersistance: UserPersistence) -> User {
-        return User(name: userPersistance.name)
-    }
-}
-
-extension UserPersistence {
-    func fromObject(_ user: User) {
-        self.name = user.name
-    }
-}
-
 class UserPersistenceManager: CoreDataManager {
     
     internal typealias T = UserPersistence
@@ -37,26 +23,30 @@ class UserPersistenceManager: CoreDataManager {
     
     func users() -> [User]? {
         guard let usersPersistence = self.fetchData() else { return nil }
-        return usersPersistence.map { User.fromPersistence($0) }
+        return usersPersistence.map { User(fromPersistence: $0) }
     }
     
     func user(name: String) -> User? {
-        let predicate = NSPredicate(format: "name = %@", name)
+        let predicate = NSPredicate(format: "username = %@", name)
         guard let result = self.fetchData(predicate)?.last else { return nil }
-        return User.fromPersistence(result)
+        return User(fromPersistence: result)
+    }
+    
+    private func user(id: UUID) -> UserPersistence? {
+        let predicate = NSPredicate(format: "%K == %@", "id", id as CVarArg)
+        guard let result = self.fetchData(predicate)?.last else { return nil }
+        return result
     }
     
     func updateUser(_ user: User) {
-        // TODO: Improve the search method (using an ID)
-        let predicate = NSPredicate(format: "name = %@", user.name ?? "")
-        guard let result = self.fetchData(predicate)?.last else { return }
+        guard let result = self.user(id: user.id!) else { return }
         result.fromObject(user)
         self.update(result)
     }
     
-    func deleteUser(index: Int) {
-        guard let allUsers = self.fetchData() else { return }
-        self.delete(allUsers[index])
+    func deleteUser(_ user: User) {
+        guard let result = self.user(id: user.id!) else { return }
+        self.delete(result)
     }
     
 }
